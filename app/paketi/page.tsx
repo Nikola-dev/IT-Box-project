@@ -437,10 +437,11 @@ export default function Paketi() {
         </a>
       </div>
       <div className="paketi-tabs tabs-animate">
-        {packages.map((pkg) => (
+        {packages.map((pkg, idx) => (
           <button
             key={pkg.key}
-            className={`paketi-tab${activeTab === pkg.key ? " active" : ""}`}
+            className={`paketi-tab paketi-animate`}
+            style={{ animationDelay: `${0.1 + idx * 0.09}s` }}
             onClick={() => handleTabChange(pkg.key)}
           >
             <img src={pkg.icon} alt={pkg.label} className="paketi-icon" />
@@ -462,6 +463,17 @@ export default function Paketi() {
         margin: 0;
         padding: 0;
       }
+        .paketi-animate {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: paketiWaveIn 0.6s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes paketiWaveIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
         .tabs-animate {
   opacity: 0;
   transform: translateY(40px);
@@ -514,6 +526,10 @@ export default function Paketi() {
           font-size: 1rem;
           transition: color 0.2s;
         }
+          .navbar a:hover {
+        text-decoration: underline;
+        color: white;
+      }
         .nav-hamburger-overlay {
           position: fixed;
           top: 24px;
@@ -714,7 +730,20 @@ export default function Paketi() {
 .paketi-btn:hover {
   transform: scale(1.07);
   border: 2px solid #ff6347;
-}`}</style>
+}
+@media (max-width: 900px) {
+  .paketi-help-section {
+    width: 100%;
+    max-width: 95vw;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.2rem;
+    box-sizing: border-box;
+  }
+}
+}
+
+`}</style>
     </main>
   );
 }

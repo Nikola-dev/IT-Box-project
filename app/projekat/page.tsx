@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function ONama() {
@@ -48,6 +49,9 @@ export default function ONama() {
             width: 100vw;
             z-index: 100;
           }
+            .navbar a:hover {
+        text-decoration: underline;
+        }
             .navbar img{
             margin-left: -2rem;
             margin-top: -2rem;
@@ -148,8 +152,8 @@ export default function ONama() {
           color: #fff;
         }
       `}</style>
+      <h1 className="faq-title">O projektu IT Box</h1>
       <div className="about-block about-animate">
-        <strong>O projektu IT Box</strong>
         <p>
           IT Box je inovativna platforma kreirana za digitalizaciju malih i
           srednjih biznisa.
@@ -159,7 +163,24 @@ export default function ONama() {
           <br />
           <br />
           Bilo da vam je potreban sajt, prodavnica ili poslovna aplikacija, IT
-          Box tim je tu da vas podrži na svakom koraku.
+          Box tim je tu da vas podrži na svakom koraku,{" "}
+          <strong>uz minimalne troškove i maksimalnu posvećenost.</strong>
+        </p>
+        <br />
+        <br />
+        <p>
+          Suština jeste da svako može kontaktirati reprezentativnog člana tima i
+          dobiti pomoć, podršku i savete prilagođene njihovim potrebama, potpuno
+          besplatno. Pogledaj{" "}
+          <Link href="/faq">
+            <strong>FAQ</strong>
+          </Link>{" "}
+          sekciju za više informacija.
+        </p>
+        <br />
+        <p>
+          Hvala vam što ste deo naše zajednice i radujemo se što ćemo zajedno
+          graditi budućnost digitalnog poslovanja!
         </p>
       </div>
       <style>{`
@@ -168,7 +189,7 @@ export default function ONama() {
   color: #ff6347;
   border-radius: 1.5rem;
   max-width: auto;
-  margin: 7rem auto 0 auto;
+  margin: 2rem auto 0 auto;
   padding: 2rem;
   text-align: center;
   box-shadow: 0 2px 16px rgba(0,0,0,0.10);
@@ -176,6 +197,13 @@ export default function ONama() {
   margin-left: 1rem;
   margin-right: 1rem;
 }
+  .faq-title {
+              text-align: center;
+              color: #fff;
+              margin-top: 6rem;
+              font-size: 2.2rem;
+              font-weight: 700;
+            }
 .about-block h2 {
   margin-bottom: 1rem;
 }

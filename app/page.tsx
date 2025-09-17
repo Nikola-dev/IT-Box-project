@@ -89,6 +89,11 @@ export default function Home() {
       width: 100vw;
       z-index: 100;
     }
+      .navbar a:hover {
+        text-decoration: underline;
+        color: #ff6347;
+        
+      }
       .navbar img{
       margin-left: -2rem;
       margin-top: -2rem;
@@ -879,9 +884,9 @@ height: 55px !important;
           <h2>Imate pitanja? Kontaktirajte nas!</h2>
         </div>
         <form className="contact-form">
-          <input type="text" placeholder="Your Name" />
-          <input type="email" placeholder="Your Email" />
-          <textarea placeholder="Your Message"></textarea>
+          <input type="text" placeholder="Vaše ime" />
+          <input type="email" placeholder="Vaš email" />
+          <textarea placeholder="Vaša poruka"></textarea>
           <button className="btn-1" type="submit">
             Pošalji poruku
           </button>
