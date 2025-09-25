@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const faqs = [
   {
@@ -60,10 +60,19 @@ const faqs = [
 
 export default function FAQ() {
   const [activeFaq, setActiveFaq] = useState<string | null>(null);
+  const answerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  function handleFaqClick(key: string) {
+  function handleFaqClick(key: string, idx: number) {
     setActiveFaq((prev) => (prev === key ? null : key));
+    setTimeout(() => {
+      if (answerRefs.current[idx]) {
+        answerRefs.current[idx]?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }, 200); // Wait for answer to render
   }
 
   return (
@@ -82,7 +91,7 @@ export default function FAQ() {
           }}
         />
         <div className="nav-links">
-          <a href="/">Početna</a>
+          <a href="/ ">Početna</a>
           <a href="/paketi">Paketi</a>
           <a href="/projekat">O projektu IT Box</a>
           <a href="/faq">FAQ</a>
@@ -145,7 +154,7 @@ export default function FAQ() {
         className={`nav-dropdown-overlay${menuOpen ? " open" : ""}`}
         onClick={() => setMenuOpen(false)}
       >
-        <a href="/" onClick={() => setMenuOpen(false)}>
+        <a href="/ " onClick={() => setMenuOpen(false)}>
           Početna
         </a>
         <a href="/paketi" onClick={() => setMenuOpen(false)}>
@@ -218,18 +227,23 @@ export default function FAQ() {
         {faqs.map((faq, idx) => (
           <button
             key={faq.key}
-            className={`faq-tab faq-animate`}
-            style={{ animationDelay: `${0.1 + idx * 0.07}s` }}
-            onClick={() => handleFaqClick(faq.key)}
+            className={`faq-tab${activeFaq === faq.key ? " active" : ""}`}
+            onClick={() => handleFaqClick(faq.key, idx)}
           >
             <span>{faq.question}</span>
           </button>
         ))}
       </div>
       {faqs.map(
-        (faq) =>
+        (faq, idx) =>
           activeFaq === faq.key && (
-            <div key={faq.key} className={`faq-content fade-in`}>
+            <div
+              key={faq.key}
+              className={`faq-content fade-in`}
+              ref={(el) => {
+                answerRefs.current[idx] = el;
+              }}
+            >
               <p>{faq.answer}</p>
             </div>
           )

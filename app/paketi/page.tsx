@@ -394,7 +394,7 @@ export default function Paketi() {
         />
 
         <div className="nav-links">
-          <a href="/">Početna</a>
+          <a href="/ ">Početna</a>
           <a href="/paketi">Paketi</a>
           <a href="/projekat">O projektu IT Box</a>
           <a href="/faq">FAQ</a>
@@ -420,7 +420,7 @@ export default function Paketi() {
         className={`nav-dropdown-overlay${menuOpen ? " open" : ""}`}
         onClick={() => setMenuOpen(false)}
       >
-        <a href="/" onClick={() => setMenuOpen(false)}>
+        <a href="/ " onClick={() => setMenuOpen(false)}>
           Početna
         </a>
         <a href="/paketi" onClick={() => setMenuOpen(false)}>

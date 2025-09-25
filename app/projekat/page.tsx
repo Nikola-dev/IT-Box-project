@@ -22,7 +22,7 @@ export default function ONama() {
           }}
         />
         <div className="nav-links">
-          <a href="/">Početna</a>
+          <a href="/ ">Početna</a>
           <a href="/paketi">Paketi</a>
           <a href="/projekat">O projektu IT Box</a>
           <a href="/faq">FAQ</a>
@@ -84,7 +84,7 @@ export default function ONama() {
         className={`nav-dropdown-overlay${menuOpen ? " open" : ""}`}
         onClick={() => setMenuOpen(false)}
       >
-        <a href="/" onClick={() => setMenuOpen(false)}>
+        <a href="/ " onClick={() => setMenuOpen(false)}>
           Početna
         </a>
         <a href="/paketi" onClick={() => setMenuOpen(false)}>

@@ -451,7 +451,7 @@ export default function Home() {
           onClick={() => setActivePackage("professional")}
         >
           <h2>Profesionalni Paket</h2>
-          <p>Napredna analitika podataka za rastuće kompanije.</p>
+          <p>Napredna rešenja.</p>
           <img
             src="/professional.svg"
             alt="ITBox Logo"
@@ -464,7 +464,7 @@ export default function Home() {
           onClick={() => setActivePackage("enterprise")}
         >
           <h2>Enterprise Paket</h2>
-          <p>Obuhvatno upravljanje podacima za velike organizacije.</p>
+          <p>Rešenja za veće organizacije.</p>
           <img
             src="/enterprise.svg"
             alt="ITBox Logo"
@@ -753,12 +753,27 @@ export default function Home() {
     `}</style>
         </div>
       )}
+      <section className="filler-section">
+        <div className="filler-content">
+          <h2>Šta nudimo?</h2>
+        </div>
+        <style>{`
+        .filler-section {
+  width: 100%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 8rem;
+  padding: 2rem 0;
+      }
+  `}</style>
+      </section>
 
       {/* Why us section */}
       <section id="whyus" className="cards-section whyus-section">
         <div className="card whyus-card" style={{ background: "#ff6347" }}>
-          <h2>Stručni Tim</h2>
-          <p>Iskusni profesionalci posvećeni vašem uspehu.</p>
+          <p>Profesionalni tim posvećen vašem uspehu.</p>
           <img
             src="/team.svg"
             alt="ITBox Logo"
@@ -766,7 +781,6 @@ export default function Home() {
           />
         </div>
         <div className="card whyus-card" style={{ background: "#ff6347" }}>
-          <h2>Prilagođena Rešenja</h2>
           <p>
             Prilagođavamo naše pristupe kako bismo zadovoljili potrebe vašeg
             poslovanja.
@@ -778,7 +792,6 @@ export default function Home() {
           />
         </div>
         <div className="card whyus-card" style={{ background: "#ff6347" }}>
-          <h2>Podrška i Bezbednost</h2>
           <p>Pouzdana podrška i robusna zaštita podataka za vašu sigurnost.</p>
           <img
             src="/security.svg"
