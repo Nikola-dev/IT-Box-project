@@ -24,6 +24,18 @@ export default function Home() {
   }, [activePackage]);
 
   useEffect(() => {
+    if (activePackage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    // Clean up on unmount
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [activePackage]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setDirection("right");
       setCurrent((prev) => (prev + 1) % heroImages.length);
