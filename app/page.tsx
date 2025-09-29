@@ -730,6 +730,8 @@ export default function Home() {
         transform: translateY(40px);
         opacity: 0;
         transition: opacity 0.4s, transform 0.4s cubic-bezier(.4,0,.2,1);
+        max-height: 90vh;
+        overflow-y: auto;
       }
       .package-overlay.open .package-overlay-content {
         opacity: 1;
