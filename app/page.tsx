@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import emailjs from "@emailjs/browser";
 
 const heroImages = ["/hero1.png", "/hero2.jpeg", "/hero3.jpeg"];
 
@@ -12,6 +13,24 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activePackage, setActivePackage] = useState<string | null>(null);
   const [showOverlay, setShowOverlay] = useState(false);
+
+  /* email */
+  const form = useRef<HTMLFormElement>(null);
+  const sendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.current) return;
+    emailjs
+      .sendForm(
+        "service_uqkgrea",
+        "template_id0u2hi",
+        form.current,
+        "wxeeziA1zNznhnlE0"
+      )
+      .then(
+        () => alert("Poruka poslata!"),
+        () => alert("Greška pri slanju poruke.")
+      );
+  };
 
   useEffect(() => {
     if (activePackage) {
@@ -910,10 +929,10 @@ height: 55px !important;
         <div className="filler-content">
           <h2>Imate pitanja? Kontaktirajte nas!</h2>
         </div>
-        <form className="contact-form">
-          <input type="text" placeholder="Vaše ime" />
-          <input type="email" placeholder="Vaš email" />
-          <textarea placeholder="Vaša poruka"></textarea>
+        <form className="contact-form" ref={form} onSubmit={sendEmail}>
+          <input type="text" name="user_name" placeholder="Vaše ime" />
+          <input type="email" name="user_email" placeholder="Vaš email" />
+          <textarea name="message" placeholder="Vaša poruka"></textarea>
           <button className="btn-1" type="submit">
             Pošalji poruku
           </button>
