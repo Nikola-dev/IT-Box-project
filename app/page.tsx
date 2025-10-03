@@ -933,7 +933,7 @@ height: 55px !important;
           <input type="text" name="user_name" placeholder="Vaše ime" />
           <input type="email" name="user_email" placeholder="Vaš email" />
           <textarea name="message" placeholder="Vaša poruka"></textarea>
-          <button className="btn-1" type="submit" onClick={sendEmail}>
+          <button className="btn-1" type="submit">
             Pošalji poruku
           </button>
         </form>

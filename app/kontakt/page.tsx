@@ -148,20 +148,29 @@ export default function KontaktPage() {
                   }
                 `}</style>
       <div className="faq-tabs">
-        {[
-          { label: "Email:", value: "itbox.dev@icloud.com" },
-          { label: "Telefon:", value: "+381669438755" },
-          { label: "Lokacija:", value: "Smederevo / Srbija" },
-        ].map((item, idx) => (
-          <button
-            key={item.label}
-            className="faq-tab kontakt-animate"
-            style={{ animationDelay: `${0.1 + idx * 0.09}s` }}
-          >
-            {item.label}
-            <span> {item.value}</span>
-          </button>
-        ))}
+        <a
+          href="mailto:itbox.dev@icloud.com"
+          className="faq-tab kontakt-animate"
+          style={{ animationDelay: "0.1s", textDecoration: "none" }}
+        >
+          Email: <span> itbox.dev@icloud.com</span>
+        </a>
+        <a
+          href="tel:+381669438755"
+          className="faq-tab kontakt-animate"
+          style={{ animationDelay: "0.19s", textDecoration: "none" }}
+        >
+          Telefon: <span> +381669438755</span>
+        </a>
+        <a
+          href="https://www.google.com/maps/search/?api=1&query=Smederevo,+Centralna+Srbija"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="faq-tab kontakt-animate"
+          style={{ animationDelay: "0.28s", textDecoration: "none" }}
+        >
+          Lokacija: <span> Smederevo / Srbija</span>
+        </a>
       </div>
       <style>{`
             .faq-main {
