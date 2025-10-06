@@ -227,7 +227,10 @@ export default function FAQ() {
         {faqs.map((faq, idx) => (
           <button
             key={faq.key}
-            className={`faq-tab${activeFaq === faq.key ? " active" : ""}`}
+            className={`faq-tab faq-animate${
+              activeFaq === faq.key ? " active" : ""
+            }`}
+            style={{ animationDelay: `${0.1 + idx * 0.07}s` }}
             onClick={() => handleFaqClick(faq.key, idx)}
           >
             <span>{faq.question}</span>
