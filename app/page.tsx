@@ -63,6 +63,17 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [heroImages.length]);
 
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
   // Handle swipe
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -83,6 +94,12 @@ export default function Home() {
     setDirection("right");
     setCurrent((current + 1) % heroImages.length);
   };
+
+  const heroTexts = [
+    "Izrada modernih i funkcionalnih web sajtova",
+    "Kreiramo prilagođene web rešenja",
+    "Vaš partner za digitalni uspeh",
+  ];
 
   return (
     <main>
@@ -187,6 +204,8 @@ export default function Home() {
     .navbar .nav-links {
       display: none !important;
     }
+
+
   }
   .nav-dropdown-overlay {
     position: fixed;
@@ -275,7 +294,24 @@ export default function Home() {
               return null;
             })}
           </div>
+          <div className="hero-image-text">{heroTexts[current]}</div>
           <style>{`
+          .hero-image-text {
+      position: absolute;
+      bottom: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+      z-index: 3;
+      text-align: center;
+      width: 90vw;
+      max-width: 900px;
+      pointer-events: none;
+      user-select: none;
+    }
   .hero-image-carousel {
    position: relative;
     width: 100vw;
@@ -320,6 +356,11 @@ export default function Home() {
     from { left: 0; opacity: 1; }
     to { left: 100vw; opacity: 0; }
   }
+  @media (max-width: 767px) {
+      .hero-image-text {
+        font-size: 1.2rem;
+        bottom: 6%;
+      }
 `}</style>
           {/* Arrows for desktop */}
           <button
@@ -814,10 +855,7 @@ export default function Home() {
           />
         </div>
         <div className="card whyus-card" style={{ background: "#ff6347" }}>
-          <p>
-            Prilagođavamo naše pristupe kako bismo zadovoljili potrebe vašeg
-            poslovanja.
-          </p>
+          <p>Prilagođavamo naše pristupe radi Vaših potreba.</p>
           <img
             src="/custom.svg"
             alt="ITBox Logo"
