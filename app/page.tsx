@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import emailjs from "@emailjs/browser";
+import Loader from "./Loader";
 
 const heroImages = ["/hero1.png", "/hero2.jpeg", "/hero3.jpeg"];
 
@@ -13,12 +14,24 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activePackage, setActivePackage] = useState<string | null>(null);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
+  const [showPageLoader, setShowPageLoader] = useState(true);
 
   /* email */
   const form = useRef<HTMLFormElement>(null);
   const sendEmail = (e: React.FormEvent) => {
+    const name = form.current?.user_name.value.trim();
+    const email = form.current?.user_email.value.trim();
+    const message = form.current?.message.value.trim();
+    if (!name || !email || !message) {
+      alert("Molimo popunite sva polja.");
+      return;
+    }
+
     e.preventDefault();
     if (!form.current) return;
+    setLoading(true);
     emailjs
       .sendForm(
         "service_j0lnq6n",
@@ -27,10 +40,20 @@ export default function Home() {
         "wxeeziA1zNznhnlE0"
       )
       .then(
-        () => alert("Poruka poslata!"),
-        () => alert("Greška pri slanju poruke.")
+        () => {
+          alert("Poruka poslata!");
+          setLoading(false);
+        },
+        () => {
+          alert("Greška pri slanju poruke.");
+          setLoading(false);
+        }
       );
   };
+  useEffect(() => {
+    const timeout = setTimeout(() => setShowPageLoader(false), 1000); // 1s
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     if (activePackage) {
@@ -103,6 +126,25 @@ export default function Home() {
 
   return (
     <main>
+      {showPageLoader && (
+        <div className="fullscreen-loader">
+          <Loader width={150} height={150} />
+          <style>{`
+          .fullscreen-loader {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #fff;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        `}</style>
+        </div>
+      )}
+      {showLoader && <Loader width={150} height={150} />}
       {/* Nav Bar */}
       <nav className="navbar">
         <Image
@@ -325,19 +367,19 @@ export default function Home() {
     opacity: 1;
   }
   .hero-image.slide-in-left {
-    animation: slideInLeft 0.6s cubic-bezier(.4,0,.2,1);
+    animation: slideInLeft 1.8s cubic-bezier(.4,0,.2,1);
     z-index: 2;
   }
   .hero-image.slide-in-right {
-    animation: slideInRight 0.6s cubic-bezier(.4,0,.2,1);
+    animation: slideInRight 1.8s cubic-bezier(.4,0,.2,1);
     z-index: 2;
   }
   .hero-image.slide-out-left {
-    animation: slideOutLeft 0.6s cubic-bezier(.4,0,.2,1);
+    animation: slideOutLeft 1.8s cubic-bezier(.4,0,.2,1);
     z-index: 1;
   }
   .hero-image.slide-out-right {
-    animation: slideOutRight 0.6s cubic-bezier(.4,0,.2,1);
+    animation: slideOutRight 1.8s cubic-bezier(.4,0,.2,1);
     z-index: 1;
   }
   @keyframes slideInLeft {
@@ -463,8 +505,8 @@ export default function Home() {
   font-size: 2.8rem;
   opacity: 0;
   transform: translateY(60px);
-  animation: slideUpFade 1.2s cubic-bezier(.4,0,.2,1) forwards;
-  animation-delay: 0.2s;
+  animation: slideUpFade 2.4s cubic-bezier(.4,0,.2,1) forwards;
+  animation-delay: 0.4s;
 }
 @keyframes slideUpFade {
   0% {
@@ -519,9 +561,10 @@ export default function Home() {
         </div>
         <div
           className="card package-card"
-          style={{ background: "#ff6347" }}
+          style={{ background: "#ff6347", position: "relative" }}
           onClick={() => setActivePackage("professional")}
         >
+          <div className="package-badge">Najpopularnije🔥</div>
           <h2>Profesionalni Paket</h2>
           <p>Napredna rešenja.</p>
           <img
@@ -544,6 +587,24 @@ export default function Home() {
           />
         </div>
         <style>{`
+        .package-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(35%, -35%) rotate(15deg);
+  background: #222;
+  color: #fff;
+  padding: 0.5rem 1.6rem;
+  border-radius: 1.2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 10;
+  letter-spacing: 0.5px;
+  cursor: default;
+  border: 2.5px solid #ff6347;
+  z-index: 10;
+}
           .packages-section {
             display: flex;
             justify-content: stretch;
@@ -583,16 +644,16 @@ export default function Home() {
             .card package-card{
               opacity: 0;
               transform: translateY(60px);
-              animation: slideUp 0.7s cubic-bezier(.4,0,.2,1) forwards;
+              animation: slideUp 1.9s cubic-bezier(.4,0,.2,1) forwards;
               }
             .package-card:nth-child(1) {
-              animation-delay: 0.1s;
+              animation-delay: 1.3s;
             }
             .package-card:nth-child(2) {
-              animation-delay: 0.3s;
+              animation-delay: 1.5s;
             }
             .package-card:nth-child(3) {
-              animation-delay: 0.5s;
+              animation-delay: 1.7s;
             }
 
           @media (max-width: 900px) {
@@ -602,6 +663,7 @@ export default function Home() {
               min-height: 60vh;
               height: auto;
               padding: 2rem 0;
+              
             }
             .package-card {
               border-radius: 1rem;
@@ -615,18 +677,30 @@ export default function Home() {
               .card package-card{
               opacity: 0;
               transform: translateY(60px);
-              animation: slideUp 0.7s cubic-bezier(.4,0,.2,1) forwards;
+              animation: slideUp 1.9s cubic-bezier(.4,0,.2,1) forwards;
               }
             .package-card:nth-child(1) {
-              animation-delay: 0.1s;
+              animation-delay: 1.2s;
             }
             .package-card:nth-child(2) {
-              animation-delay: 0.3s;
+              animation-delay: 1.5s;
             }
             .package-card:nth-child(3) {
-              animation-delay: 0.5s;
-            } 
-          }
+              animation-delay: 1.7s;
+            }
+              .package-badge {
+    top: 0;
+    right: 0;
+    transform: translate(15%, -35%) rotate(12deg);
+    font-size: 0.85rem;
+    padding: 0.3rem 0.9rem;
+    min-width: 90px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+          
+
         `}</style>
       </section>
 
@@ -841,7 +915,38 @@ export default function Home() {
   min-height: 8rem;
   padding: 2rem 0;
       }
-  `}</style>
+  .filler-content h2 {
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 700;
+  background: linear-gradient(90deg, #ff6347, #ff6347, #ff6347, #ff6347, #ff6347);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-size: 2.5rem;
+  opacity: 0;
+  transform: translateY(60px);
+  animation: slideUpFade 2.4s cubic-bezier(.4,0,.2,1) forwards;
+  animation-delay: 0.4s;
+}
+  @media (max-width: 900px) {
+    .filler-content h2 {
+      font-size: 2rem;
+      padding: 1.5rem 0.5rem;
+      text-align: center;
+    }
+  }
+  @media (max-width: 600px) {
+    .filler-content h2 {
+      font-size: 1.5rem;
+      padding: 1rem 0.2rem;
+    }
+    .filler-section {
+      padding: 1rem 0;
+      min-height: 5rem;
+    }
+  }
+        `}</style>
       </section>
 
       {/* Why us section */}
@@ -934,16 +1039,16 @@ height: 55px !important;
               .package-card, .whyus-card {
       opacity: 0;
       transform: translateY(60px);
-      animation: slideUp 0.7s cubic-bezier(.4,0,.2,1) forwards;
+      animation: slideUp 1.9s cubic-bezier(.4,0,.2,1) forwards;
     }
     .package-card:nth-child(1), .whyus-card:nth-child(1) {
-      animation-delay: 0.1s;
+      animation-delay: 1.3s;
     }
     .package-card:nth-child(2), .whyus-card:nth-child(2) {
-      animation-delay: 0.3s;
+      animation-delay: 1.5s;
     }
     .package-card:nth-child(3), .whyus-card:nth-child(3) {
-      animation-delay: 0.5s;
+      animation-delay: 1.7s;
     }
     @keyframes slideUp {
       to {
@@ -962,19 +1067,301 @@ height: 55px !important;
     
         `}</style>
       </section>
+
+      {/* Technologies Section */}
+      <section className="technologies-section">
+        <div className="filler-content">
+          <h2>Tehnologije</h2>
+          <p>
+            Ovo su neke od tehnologija koje koristimo za izradu Vašeg sajta i
+            aplikacija:
+          </p>
+        </div>
+        <div className="tech-grid">
+          {[...Array(8)].map((_, i) => (
+            <div
+              className="tech-item"
+              style={{ animationDelay: `${0.2 + i * 0.1}s` }}
+              key={i}
+            >
+              <img
+                src={i === 0 ? "/html5.png" : `/tech${i + 1}.png`}
+                alt={`Tech ${i + 1}`}
+                style={{ width: 64, height: 64 }}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+      <style>{`
+      .tech-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .tech-item {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      width: 110px;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(60px);
+      animation: slideUp 1.9s cubic-bezier(.4,0,.2,1) forwards;
+      transition: transform 1.2s cubic-bezier(.4,0,.2,1), box-shadow 0.2s;
+    }
+    .tech-item:hover, .tech-item:active {
+      transform: scale(1.1);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+      z-index: 2;
+      transform: translateY(0);
+    }
+    .tech-item img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+    }
+    /* 6 in a row on desktop */
+    @media (min-width: 901px) {
+      .tech-grid {
+        flex-wrap: nowrap;
+      }
+      .tech-item {
+        flex: 1 1 0;
+        max-width: 110px;
+      }
+    }
+    /* 3 in a row on mobile */
+    @media (max-width: 900px) {
+      .tech-grid {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .tech-item {
+        width: 30vw;
+        max-width: 110px;
+        min-width: 80px;
+      }
+    }
+    @media (max-width: 600px) {
+      .tech-grid {
+        gap: 0.5rem;
+      }
+      .tech-item {
+        width: 30vw;
+        min-width: 70px;
+        max-width: 90px;
+        height: 90px;
+      }
+      .tech-item img {
+        width: 48px;
+        height: 48px;
+      }
+    }
+    @keyframes slideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+        .technologies-section {
+          width: 100%;
+          background: #f5f5f5;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          min-height: 12rem;
+          padding: 2rem 1rem;
+          text-align: center;
+        }
+        .technologies-section h2 {
+          font-size: 2.5rem;
+          margin-bottom: 0.5rem;
+        }
+        .technologies-section p {
+          font-size: 1.2rem;
+          color: #555;
+          max-width: 600px;
+        }
+        @media (max-width: 600px) {
+          .technologies-section h2 {
+            font-size: 1.8rem;
+          }
+          .technologies-section p {
+            font-size: 1rem;
+          }
+        }
+      `}</style>
+
+      {/*Work we did section*/}
+      <section className="work-section">
+        <div className="filler-content">
+          <h2>Naši radovi</h2>
+        </div>
+        <div className="work-grid">
+          <a
+            href="https://example.com/1"
+            className="work-box"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="/work1.jpg" alt="Work 1" />
+          </a>
+          <a
+            href="https://example.com/2"
+            className="work-box"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="/work2.jpg" alt="Work 2" />
+          </a>
+          <a
+            href="https://example.com/3"
+            className="work-box"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="/work3.jpg" alt="Work 3" />
+          </a>
+        </div>
+        <style>{`
+    .work-section {
+      width: 100%;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 0;
+    }
+    .work-grid {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+    }
+    .work-box {
+      flex: 1 1 0;
+      min-width: 0;
+      background: rgba(255,99,71,0.12);
+      border: 2.5px solid #ff6347;
+      border-radius: 1.2rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      aspect-ratio: 16/10;
+      max-width: 370px;
+      cursor: pointer;
+    }
+    .work-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.92;
+      transition: opacity 0.2s;
+      border-radius: 1.1rem;
+    }
+    .work-box:hover {
+      transform: scale(1.04);
+      box-shadow: 0 6px 24px rgba(255,99,71,0.18);
+      z-index: 2;
+    }
+    .work-box:hover img {
+      opacity: 1;
+    }
+    @media (max-width: 900px) {
+      .work-grid {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+      }
+      .work-box {
+        width: 95vw;
+        max-width: 420px;
+        aspect-ratio: 16/10;
+      }
+    }
+  `}</style>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="faq-section">
+        <div className="filler-content">
+          <div>
+            <a href="/faq" className="btn-1">
+              Pogledaj FAQ
+            </a>
+          </div>
+          <div className="filler-content">
+            <a href="/projekat" className="btn-1">
+              Saznaj više
+            </a>
+          </div>
+          <div>
+            <a href="/kontakt" className="btn-1">
+              Kontaktirajte nas
+            </a>
+          </div>
+        </div>
+      </section>
+      <style>{`
+        .faq-section {
+          width: 100%;
+          background: #f5f5f5;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          min-height: 12rem;
+          padding: 2rem 1rem;
+          text-align: center;
+        }
+        .faq-section h2 {
+          font-size: 2.5rem;
+          margin-bottom: 0.5rem;
+        }
+        .faq-section p {
+          font-size: 1.2rem;
+          color: #555;
+          max-width: 600px;
+        }
+        @media (max-width: 600px) {
+          .faq-section h2 {
+            font-size: 1.8rem;
+          }
+          .faq-section p {
+            font-size: 1rem;
+          }
+        }
+      `}</style>
+
       {/* Contact Section */}
       <section id="contact" className="contact-section">
         <div className="filler-content">
           <h2>Imate pitanja? Kontaktirajte nas!</h2>
         </div>
-        <form className="contact-form" ref={form} onSubmit={sendEmail}>
-          <input type="text" name="user_name" placeholder="Vaše ime" />
-          <input type="email" name="user_email" placeholder="Vaš email" />
-          <textarea name="message" placeholder="Vaša poruka"></textarea>
-          <button className="btn-1" type="submit">
-            Pošalji poruku
-          </button>
-        </form>
+        {loading ? (
+          <Loader />
+        ) : (
+          <form className="contact-form" ref={form} onSubmit={sendEmail}>
+            <input type="text" name="user_name" placeholder="Vaše ime" />
+            <input type="email" name="user_email" placeholder="Vaš email" />
+            <textarea name="message" placeholder="Vaša poruka"></textarea>
+            <button className="btn-1" type="submit">
+              Pošalji poruku
+            </button>
+          </form>
+        )}
         <style>{`
 
         .btn-1{
@@ -1038,6 +1425,42 @@ height: 55px !important;
                   
               `}</style>
       </section>
+
+      {/* Footer Section */}
+      <footer className="footer-section">
+        <div className="footer-content">
+          <p>© 2025 IT Box. Sva prava zadržana.</p>
+          <p>
+            <a href="/privacy">Politika privatnosti</a> |{" "}
+            <a href="/terms">Uslovi korišćenja</a>
+          </p>
+        </div>
+        <style>{`
+          .footer-section {
+            width: 100%;
+            background: #ff6347;
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem 1rem;
+          }
+          .footer-content p {
+            margin: 0.3rem 0;
+            font-size: 0.9rem;
+          }
+          .footer-content a {
+            color: #fff;
+            text-decoration: none;
+          }
+          .footer-content a:hover {
+            text-decoration: underline;
+          }
+            @media (max-width: 600px) {
+        .footer-content p {
+          font-size: 0.8rem;
+        }
+      }
+        `}</style>
+      </footer>
     </main>
   );
 }
