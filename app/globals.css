@@ -26,3 +26,9 @@ body {
   font-family: "Google Sans Code", sans-serif;
   font-weight: 600;
 }
+
+html,
+body {
+  overflow-x: hidden;
+  touch-action: pan-y; /* Only allow vertical scrolling */
+}

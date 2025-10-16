@@ -141,6 +141,11 @@ export default function Home() {
             align-items: center;
             justify-content: center;
           }
+            html, body {
+              overflow-x: hidden;
+              touch-action: pan-y; /* Only allow vertical scrolling */
+            }
+              
         `}</style>
         </div>
       )}
@@ -564,7 +569,7 @@ export default function Home() {
           style={{ background: "#ff6347", position: "relative" }}
           onClick={() => setActivePackage("professional")}
         >
-          <div className="package-badge">Najpopularnije🔥</div>
+          <div className="package-badge">Popularno🔥</div>
           <h2>Profesionalni Paket</h2>
           <p>Napredna rešenja.</p>
           <img
@@ -931,7 +936,7 @@ export default function Home() {
 }
   @media (max-width: 900px) {
     .filler-content h2 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       padding: 1.5rem 0.5rem;
       text-align: center;
     }
